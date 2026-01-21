@@ -6,10 +6,11 @@ const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 const instance = axios.create({
   baseURL: API_URL,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
 });
+
+if (token) {
+  instance.defaults.headers.Authorization = `Bearer ${token}`;
+}
 
 export interface FetchNotesResponse {
   notes: Note[];
