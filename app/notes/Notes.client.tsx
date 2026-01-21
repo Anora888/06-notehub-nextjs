@@ -37,7 +37,9 @@ export default function NotesClient() {
   if (isLoading) return <p>Loading, please wait...</p>;
   if (error || !data) return <p>Something went wrong.</p>;
 
+ 
   return (
+    
     <div className={css.container}>
       <div className={css.toolbar}>
         <SearchBox
@@ -47,6 +49,7 @@ export default function NotesClient() {
             setPage(1); 
           }}
         />
+
 
         {data.totalPages > 1 && (
           <Pagination
