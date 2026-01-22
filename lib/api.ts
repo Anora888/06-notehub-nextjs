@@ -1,45 +1,82 @@
-import axios from "axios";
 import type { Note } from "@/types/note";
 
-const API_URL = "https://notehub-public.goit.study/api";
-const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
-const instance = axios.create({
-  baseURL: API_URL,
-});
-
-if (token) {
-  instance.defaults.headers.Authorization = `Bearer ${token}`;
-}
+const BASE_URL = "https://notehub-public.goit.study/api";
 
 export interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
 }
 
-export const fetchNotes = async (
-  page: number,
-  search: string
-): Promise<FetchNotesResponse> => {
-  const { data } = await instance.get<FetchNotesResponse>("/notes", {
-    params: { page, search },
+// 🔹 отримання списку нотаток
+export async function fetchNotes(
+  page: number = 1,
+  search: string = ""
+): Promise<FetchNotesResponse> {
+  const res = await fetch(
+    `${BASE_URL}/notes?page=${page}&search=${search}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch notes");
+  }
+
+  return res.json();
+}
+
+// 🔹 отримання нотатки по id
+export async function fetchNoteById(id: string): Promise<Note> {
+  const res = await fetch(`${BASE_URL}/notes/${id}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+    },
+    cache: "no-store",
   });
-  return data;
-};
 
-export const fetchNoteById = async (id: string): Promise<Note> => {
-  const { data } = await instance.get<Note>(`/notes/${id}`);
-  return data;
-};
+  if (!res.ok) {
+    throw new Error("Failed to fetch note");
+  }
 
-export const createNote = async (
+  return res.json();
+}
+
+// 🔹 створення нотатки
+export async function createNote(
   note: Pick<Note, "title" | "content" | "tag">
-): Promise<Note> => {
-  const { data } = await instance.post<Note>("/notes", note);
-  return data;
-};
+): Promise<Note> {
+  const res = await fetch(`${BASE_URL}/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+    },
+    body: JSON.stringify(note),
+  });
 
-export const deleteNote = async (id: string): Promise<Note> => {
-  const { data } = await instance.delete<Note>(`/notes/${id}`);
-  return data;
-};
+  if (!res.ok) {
+    throw new Error("Failed to create note");
+  }
+
+  return res.json();
+}
+
+// 🔹 видалення нотатки
+export async function deleteNote(id: string): Promise<Note> {
+  const res = await fetch(`${BASE_URL}/notes/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete note");
+  }
+
+  return res.json();
+}
