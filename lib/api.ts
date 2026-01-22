@@ -7,7 +7,7 @@ export interface FetchNotesResponse {
   totalPages: number;
 }
 
-// 🔹 отримання списку нотаток
+
 export async function fetchNotes(
   page: number = 1,
   search: string = ""
@@ -29,7 +29,7 @@ export async function fetchNotes(
   return res.json();
 }
 
-// 🔹 отримання нотатки по id
+
 export async function fetchNoteById(id: string): Promise<Note> {
   const res = await fetch(`${BASE_URL}/notes/${id}`, {
     headers: {
@@ -45,7 +45,7 @@ export async function fetchNoteById(id: string): Promise<Note> {
   return res.json();
 }
 
-// 🔹 створення нотатки
+
 export async function createNote(
   note: Pick<Note, "title" | "content" | "tag">
 ): Promise<Note> {
@@ -65,7 +65,7 @@ export async function createNote(
   return res.json();
 }
 
-// 🔹 видалення нотатки
+
 export async function deleteNote(id: string): Promise<Note> {
   const res = await fetch(`${BASE_URL}/notes/${id}`, {
     method: "DELETE",
