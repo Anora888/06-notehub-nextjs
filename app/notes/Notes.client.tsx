@@ -20,6 +20,7 @@ interface FetchNotesResponse {
   totalPages: number;
 }
 
+
 export default function NotesClient() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");

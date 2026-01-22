@@ -7,6 +7,7 @@ export default function NotesError({
   error: Error;
   reset: () => void;
 }) {
+  
   return (
     <div>
       <h2>Something went wrong 😢</h2>
@@ -14,4 +15,5 @@ export default function NotesError({
       <button onClick={reset}>Try again</button>
     </div>
   );
+
 }
