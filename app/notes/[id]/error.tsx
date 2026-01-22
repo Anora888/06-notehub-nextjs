@@ -13,7 +13,9 @@ export default function Error({
     console.error(error);
   }, [error]);
 
+
   return (
+    
     <div style={{ padding: 40 }}>
       <h2>Something went wrong while loading the note</h2>
       <button onClick={() => reset()}>Try again</button>
