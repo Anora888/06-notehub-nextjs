@@ -3,7 +3,9 @@ import NotesClient from "@/components/NotesClient/Notes.client";
 import { fetchNotes } from "@/lib/api/notes";
 
 interface NotesPageProps {
-  searchParams?: { tag?: string };
+  searchParams?: {
+    tag?: string;
+  };
 }
 
 export default async function NotesPage({ searchParams }: NotesPageProps) {
@@ -11,7 +13,6 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
 
   const queryClient = new QueryClient();
 
- 
   await queryClient.prefetchQuery({
     queryKey: ["notes", 1, "", tag],
     queryFn: () => fetchNotes(1, "", tag),
@@ -23,3 +24,4 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
     </HydrationBoundary>
   );
 }
+
